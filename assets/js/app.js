@@ -25,7 +25,45 @@ import topbar from "../vendor/topbar"
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
 let liveSocket = new LiveSocket("/live", Socket, {
   longPollFallbackMs: 2500,
-  params: {_csrf_token: csrfToken}
+  params: {_csrf_token: csrfToken},
+  hooks: {
+    ChartHook: {
+      mounted() {
+        const ctx = this.el.getContext("2d");
+        const chartData = JSON.parse(this.el.dataset.chartData);
+
+        new Chart(ctx, {
+          type: "line",
+          data: chartData,
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: "top",
+              },
+              tooltip: {
+                mode: "index",
+                intersect: false,
+              },
+            },
+            scales: {
+              y: {
+                beginAtZero: false,
+                min: 50,
+                max: 100,
+                ticks: {
+                  callback: function (value) {
+                    return value + "%";
+                  },
+                },
+              },
+            },
+          },
+        });
+      },
+    },
+  },
 })
 
 // Show progress bar on live navigation and form submits
@@ -42,3 +80,9 @@ liveSocket.connect()
 // >> liveSocket.disableLatencySim()
 window.liveSocket = liveSocket
 
+// Simulate loading for dashboard elements
+setTimeout(() => {
+  document.querySelectorAll(".animate-pulse").forEach((el) => {
+    el.classList.remove("animate-pulse");
+  });
+}, 1500);

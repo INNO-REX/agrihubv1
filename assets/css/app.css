@@ -3,3 +3,44 @@
 @import "tailwindcss/utilities";
 
 /* This file is for your main application CSS */
+.sidebar {
+  transition: all 0.3s ease;
+}
+.sidebar.collapsed {
+  width: 70px;
+}
+.sidebar.collapsed .nav-text {
+  display: none;
+}
+.sidebar.collapsed .logo-text {
+  display: none;
+}
+.sidebar.collapsed .menu-item {
+  justify-content: center;
+}
+.main-content {
+  transition: all 0.3s ease;
+}
+.sidebar.collapsed + .main-content {
+  margin-left: 70px;
+}
+.card-hover:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+.leaflet-container {
+  height: 300px;
+  width: 100%;
+  border-radius: 0.5rem;
+}

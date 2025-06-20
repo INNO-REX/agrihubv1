@@ -18,7 +18,10 @@ defmodule AgrihubWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
+    live "/dashboard", DashboardLive.Index, :index
   end
+
+
 
   # Other scopes may use custom stacks.
   # scope "/api", AgrihubWeb do

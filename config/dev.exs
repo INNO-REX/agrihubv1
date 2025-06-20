@@ -3,7 +3,7 @@ import Config
 # Configure your database
 config :agrihub, Agrihub.Repo,
   username: "postgres",
-  password: "32211",
+  password: "postgres",
   hostname: "localhost",
   database: "agrihub_dev",
   stacktrace: true,
