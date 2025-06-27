@@ -1,12 +1,15 @@
 <div class="min-h-screen bg-gray-100">
   <!-- Side Navigation -->
-  <.side_nav current_page="/dashboard" collapsed={@sidebar_collapsed} />
+   
+  <.side_nav current_page="/dashboard" collapsed={@nav_collapsed || false} 
+  expanded_groups={@expanded_groups} socket={@socket}
+  />
 
   <!-- Main Content Area -->
   <div class={[
-    "transition-all duration-300",
-    @sidebar_collapsed && "ml-16" || "ml-64"
-  ]}>
+     "transition-all duration-300",
+     @sidebar_collapsed && "ml-16" || "ml-64"
+    ]}>
     
     <!-- Top Navigation Bar -->
     <header class="bg-white shadow-sm border-b border-gray-200">

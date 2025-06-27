@@ -12,8 +12,18 @@ defmodule AgrihubWeb.Components.SideNav do
 
   attr :current_page, :string, default: ""
   attr :collapsed, :boolean, default: false
+  attr :expanded_groups, :list, default: []
+  attr :socket, :any, default: nil
 
   def side_nav(assigns) do
+    # Determine current page if not provided
+    current_page = if assigns.current_page != "" do
+      assigns.current_page
+    else
+      get_current_page_from_socket(assigns.socket)
+    end
+
+    assigns = assign(assigns, :current_page, current_page)
     ~H"""
     <nav class={[
       "fixed left-0 top-0 h-full bg-white shadow-lg transition-all duration-300 z-50",
@@ -26,15 +36,12 @@ defmodule AgrihubWeb.Components.SideNav do
           @collapsed && "px-2" || "px-4"
         ]}>
           <div class="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center">
-            <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
-              <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/>
-            </svg>
+            <img src="/images/logo_now.png" class="h-20 drop-shadow-xl mb-4" />
           </div>
           <span class={[
             "font-bold text-xl text-gray-800 transition-all duration-300",
             @collapsed && "opacity-0 w-0" || "opacity-100"
           ]}>
-            AgriHub
           </span>
         </div>
       </div>
@@ -52,7 +59,12 @@ defmodule AgrihubWeb.Components.SideNav do
           />
 
           <!-- Farm Management -->
-          <.nav_group label="Farm Management" collapsed={@collapsed}>
+          <.nav_group
+            label="Farm Management"
+            group_id="farm_management"
+            collapsed={@collapsed}
+            expanded_groups={@expanded_groups}
+          >
             <.nav_item
               icon="fas fa-map-marked-alt"
               label="Farm Overview"
@@ -80,7 +92,12 @@ defmodule AgrihubWeb.Components.SideNav do
           </.nav_group>
 
           <!-- Crop Management -->
-          <.nav_group label="Crop Management" collapsed={@collapsed}>
+          <.nav_group
+            label="Crop Management"
+            group_id="crop_management"
+            collapsed={@collapsed}
+            expanded_groups={@expanded_groups}
+          >
             <.nav_item
               icon="fas fa-seedling"
               label="Crop Overview"
@@ -116,7 +133,12 @@ defmodule AgrihubWeb.Components.SideNav do
           </.nav_group>
 
           <!-- Livestock -->
-          <.nav_group label="Livestock" collapsed={@collapsed}>
+          <.nav_group
+            label="Livestock"
+            group_id="livestock"
+            collapsed={@collapsed}
+            expanded_groups={@expanded_groups}
+          >
             <.nav_item
               icon="fas fa-cow"
               label="Animal Overview"
@@ -143,17 +165,15 @@ defmodule AgrihubWeb.Components.SideNav do
             />
           </.nav_group>
 
-          <!-- Inventory -->
-          <.nav_item
-            icon="fas fa-boxes"
-            label="Inventory"
-            href={~p"/inventory"}
-            current_page={@current_page}
-            collapsed={@collapsed}
-          />
+
 
           <!-- Orders & Sales -->
-          <.nav_group label="Sales & Orders" collapsed={@collapsed}>
+          <.nav_group
+            label="Sales & Orders"
+            group_id="sales_orders"
+            collapsed={@collapsed}
+            expanded_groups={@expanded_groups}
+          >
             <.nav_item
               icon="fas fa-shopping-cart"
               label="Orders"
@@ -179,6 +199,15 @@ defmodule AgrihubWeb.Components.SideNav do
               sub_item={true}
             />
           </.nav_group>
+
+           <!-- Inventory -->
+          <.nav_item
+            icon="fas fa-boxes"
+            label="Inventory"
+            href={~p"/inventory"}
+            current_page={@current_page}
+            collapsed={@collapsed}
+          />
 
           <!-- Analytics -->
           <.nav_item
@@ -284,25 +313,82 @@ defmodule AgrihubWeb.Components.SideNav do
   end
 
   attr :label, :string, required: true
+  attr :group_id, :string, required: true
   attr :collapsed, :boolean, default: false
+  attr :expanded_groups, :list, default: []
   slot :inner_block, required: true
 
   defp nav_group(assigns) do
+    assigns = assign(assigns, :is_expanded, assigns.group_id in assigns.expanded_groups)
+
     ~H"""
     <div class="space-y-1">
-      <div class={[
-        "px-3 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider transition-all duration-300",
-        @collapsed && "opacity-0 h-0 overflow-hidden" || "opacity-100"
-      ]}>
-        {@label}
-      </div>
-      <div class={[
-        "space-y-1 transition-all duration-300",
-        @collapsed && "opacity-0 h-0 overflow-hidden" || "opacity-100"
-      ]}>
+      <!-- Group Header - Clickable -->
+      <button
+        type="button"
+        phx-click="toggle_nav_group"
+        phx-value-group={@group_id}
+        class={[
+          "w-full flex items-center justify-between px-3 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider transition-all duration-300 rounded-lg hover:bg-gray-50",
+          @collapsed && "opacity-0 h-0 overflow-hidden pointer-events-none" || "opacity-100"
+        ]}
+      >
+        <span>{@label}</span>
+        <i class={[
+          "fas fa-chevron-right transition-transform duration-200 text-xs",
+          @is_expanded && "transform rotate-90" || ""
+        ]}></i>
+      </button>
+
+      <!-- Group Content - Collapsible -->
+      <div
+        id={"nav_group_#{@group_id}"}
+        class={[
+          "space-y-1 transition-all duration-300 overflow-hidden",
+          @collapsed && "opacity-0 h-0" || "",
+          !@collapsed && @is_expanded && "opacity-100" || "opacity-0 h-0"
+        ]}
+      >
         {render_slot(@inner_block)}
       </div>
     </div>
     """
+  end
+
+  # Helper function to determine current page from socket
+  defp get_current_page_from_socket(socket) when is_nil(socket), do: "/"
+
+  defp get_current_page_from_socket(socket) do
+    case socket.view do
+      AgrihubWeb.DashboardLive -> "/dashboard"
+      AgrihubWeb.FarmsLive ->
+        case socket.assigns[:live_action] do
+          :new -> "/farms/new"
+          :fields -> "/farms/fields"
+          _ -> "/farms"
+        end
+      AgrihubWeb.CropsLive ->
+        case socket.assigns[:live_action] do
+          :schedule -> "/crops/schedule"
+          :health -> "/crops/health"
+          :harvest -> "/crops/harvest"
+          _ -> "/crops"
+        end
+      AgrihubWeb.LivestockLive ->
+        case socket.assigns[:live_action] do
+          :health -> "/livestock/health"
+          :breeding -> "/livestock/breeding"
+          _ -> "/livestock"
+        end
+      AgrihubWeb.InventoryLive -> "/inventory"
+      AgrihubWeb.OrdersLive -> "/orders"
+      AgrihubWeb.ProductsLive -> "/products"
+      AgrihubWeb.CustomersLive -> "/customers"
+      AgrihubWeb.AnalyticsLive -> "/analytics"
+      AgrihubWeb.EquipmentLive -> "/equipment"
+      AgrihubWeb.WeatherLive -> "/weather"
+      AgrihubWeb.SettingsLive -> "/settings"
+      _ -> "/"
+    end
   end
 end

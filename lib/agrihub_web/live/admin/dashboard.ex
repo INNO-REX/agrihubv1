@@ -6,10 +6,13 @@ defmodule AgrihubWeb.DashboardLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
+
     {:ok,
      socket
      |> assign(:page_title, "Dashboard")
      |> assign(:sidebar_collapsed, false)
+     |> assign(:nav_collapsed, false)
+     |> assign(:expanded_groups, [])
      |> assign(:show_profile_menu, false)
      |> assign(:total_farms, 24)
      |> assign(:farm_growth, 12)
@@ -88,6 +91,17 @@ defmodule AgrihubWeb.DashboardLive.Index do
          }
        ]
      })}
+  end
+
+  def handle_event("toggle_nav_group", %{"group" => group_id}, socket) do
+    expanded_groups =
+      if group_id in socket.assigns.expanded_groups do
+        List.delete(socket.assigns.expanded_groups, group_id)
+      else
+        [group_id | socket.assigns.expanded_groups]
+      end
+
+    {:noreply, assign(socket, expanded_groups: expanded_groups)}
   end
 
   @impl true

@@ -34,7 +34,7 @@ defmodule AgrihubWeb.HomePageLive.Home do
         <!-- Main Text Content -->
         <div class="relative z-40 flex flex-col h-full justify-center items-center px-4 md:px-20 max-w-2xl text-center">
           <div class="flex flex-col items-center gap-3 mb-6">
-            <img src="/images/logo.svg" class="h-16 drop-shadow-xl mb-2" />
+            <img src="/images/logo_now.png" class="h-20 drop-shadow-xl mb-4" />
             <span class="font-extrabold text-green-900 text-3xl md:text-4xl tracking-widest drop-shadow">AgriHub</span>
           </div>
           <h1 class="text-4xl md:text-5xl font-extrabold italic text-green-900 drop-shadow-lg leading-tight mb-4">

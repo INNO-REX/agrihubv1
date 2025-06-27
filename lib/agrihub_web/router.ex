@@ -21,6 +21,12 @@ defmodule AgrihubWeb.Router do
     live "/dashboard", DashboardLive.Index, :index
   end
 
+  scope "/weather", AgrihubWeb do
+    pipe_through :browser
+
+    live "/", WeatherLive.Index, :index
+  end
+
 
 
   # Other scopes may use custom stacks.

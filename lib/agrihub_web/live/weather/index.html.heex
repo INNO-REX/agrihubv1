@@ -1,0 +1,31 @@
+<div class="min-h-screen bg-gray-100">
+  <!-- Side Navigation -->
+  <.side_nav current_page="/dashboard" collapsed={@sidebar_collapsed} />
+
+  <!-- Main Content Area -->
+  <div class={[
+     "transition-all duration-300",
+     @sidebar_collapsed && "ml-16" || "ml-64"
+    ]}>
+    
+    <!-- Top Navigation Bar -->
+    <header class="bg-white shadow-sm border-b border-gray-200">
+      <div class="px-6 py-4 flex items-center justify-between">
+        <div class="flex items-center space-x-4">
+          <!-- Sidebar Toggle Button -->
+          <button 
+            phx-click="toggle-sidebar" 
+            class="text-gray-500 hover:text-gray-700 focus:outline-none transition-colors duration-200"
+            aria-label={@sidebar_collapsed && "Expand sidebar" || "Collapse sidebar"}
+          >
+            <i class={[
+              "fas transition-transform duration-200",
+              @sidebar_collapsed && "fa-bars" || "fa-times"
+            ]}></i>
+          </button>
+          <h1 class="text-xl font-semibold text-gray-800">Weather</h1>
+        </div>
+      </div>
+    </header>
+  </div>
+</div>
