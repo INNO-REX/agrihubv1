@@ -59,8 +59,8 @@ defmodule AgrihubWeb.HomePageLive.Home do
         <img src="/images/leaf3.png" class="absolute right-[-80px] top-0 w-72 opacity-30 blur-2xl z-0" />
         <!-- Subtle animated nature SVG -->
         <svg class="absolute right-24 bottom-12 w-32 h-32 z-20 animate-spin-slow opacity-100" fill="none" viewBox="0 0 100 100" style="filter: drop-shadow(0 0 20px #22ff55) drop-shadow(0 0 40px #22ff55);">
-  <circle cx="50" cy="50" r="48" stroke="#22ff55" stroke-width="5" stroke-dasharray="10 10" />
-</svg>
+       <circle cx="50" cy="50" r="48" stroke="#22ff55" stroke-width="5" stroke-dasharray="10 10" />
+     </svg>
         <!-- Animated floating icons -->
         <svg class="absolute left-1/4 top-1/3 w-10 h-10 z-40 animate-float" fill="#bbf7d0" viewBox="0 0 24 24"><circle cx="12" cy="12" r="7" /></svg>
         <!-- Subtle background pattern -->

@@ -1,0 +1,390 @@
+<div class="min-h-screen bg-gray-100">
+  <!-- Side Navigation -->
+  <.side_nav current_page="/dashboard" collapsed={@sidebar_collapsed} />
+
+  <!-- Main Content Area -->
+  <div class={[
+    "transition-all duration-300",
+    @sidebar_collapsed && "ml-16" || "ml-64"
+  ]}>
+    
+    <!-- Top Navigation Bar -->
+    <header class="bg-white shadow-sm border-b border-gray-200">
+      <div class="px-6 py-4 flex items-center justify-between">
+        <div class="flex items-center space-x-4">
+          <!-- Sidebar Toggle Button -->
+          <button 
+            phx-click="toggle-sidebar" 
+            class="text-gray-500 hover:text-gray-700 focus:outline-none transition-colors duration-200"
+            aria-label={@sidebar_collapsed && "Expand sidebar" || "Collapse sidebar"}
+          >
+            <i class={[
+              "fas transition-transform duration-200",
+              @sidebar_collapsed && "fa-bars" || "fa-times"
+            ]}></i>
+          </button>
+          <h1 class="text-xl font-semibold text-gray-800">AgriHub Dashboard</h1>
+        </div>
+        
+        <!-- Top Right Actions -->
+        <div class="flex items-center space-x-4">
+          <!-- Notifications -->
+          <div class="relative">
+            <button 
+              phx-click="show-notifications" 
+              class="text-gray-500 hover:text-gray-700 focus:outline-none transition-colors duration-200"
+              aria-label="Notifications"
+            >
+              <i class="fas fa-bell text-lg"></i>
+            </button>
+            <span class="absolute -top-1 -right-1 h-3 w-3 rounded-full bg-red-500 flex items-center justify-center">
+              <span class="text-xs text-white font-bold">3</span>
+            </span>
+          </div>
+          
+          <!-- Messages -->
+          <div class="relative">
+            <button 
+              phx-click="show-messages" 
+              class="text-gray-500 hover:text-gray-700 focus:outline-none transition-colors duration-200"
+              aria-label="Messages"
+            >
+              <i class="fas fa-envelope text-lg"></i>
+            </button>
+            <span class="absolute -top-1 -right-1 h-3 w-3 rounded-full bg-blue-500"></span>
+          </div>
+          
+          <!-- Profile Dropdown -->
+          <div class="relative">
+            <button 
+              phx-click="toggle-profile-menu" 
+              class="flex items-center space-x-2 focus:outline-none"
+              aria-label="User menu"
+            >
+              <div class="w-8 h-8 rounded-full bg-green-600 flex items-center justify-center text-white">
+                <i class="fas fa-user text-sm"></i>
+              </div>
+              <span class="text-sm font-medium text-gray-700">Admin</span>
+              <i class="fas fa-chevron-down text-xs text-gray-400"></i>
+            </button>
+            
+            <!-- Profile Dropdown Menu -->
+            <%= if @show_profile_menu do %>
+              <div class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10">
+                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile</a>
+                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
+                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Log out</a>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Dashboard Content -->
+    <main class="p-6">
+      <!-- Stats Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+        <!-- Total Farms Card -->
+        <div class="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 p-6 border border-gray-100">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-gray-500 text-sm font-medium">Total Farms</p>
+              <h3 class="text-2xl font-bold text-gray-800 mt-1"><%= @total_farms %></h3>
+            </div>
+            <div class="p-3 rounded-full bg-green-100 text-green-600">
+              <i class="fas fa-tractor text-xl"></i>
+            </div>
+          </div>
+          <div class="mt-4 flex items-center">
+            <span class="text-green-600 text-sm font-semibold">+<%= @farm_growth %>%</span>
+            <span class="text-gray-500 text-sm ml-2">from last month</span>
+          </div>
+        </div>
+
+        <!-- Active Plants Card -->
+        <div class="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 p-6 border border-gray-100">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-gray-500 text-sm font-medium">Active Plants</p>
+              <h3 class="text-2xl font-bold text-gray-800 mt-1"><%= @active_plants %></h3>
+            </div>
+            <div class="p-3 rounded-full bg-blue-100 text-blue-600">
+              <i class="fas fa-seedling text-xl"></i>
+            </div>
+          </div>
+          <div class="mt-4 flex items-center">
+            <span class="text-green-600 text-sm font-semibold">+<%= @plant_growth %>%</span>
+            <span class="text-gray-500 text-sm ml-2">from last month</span>
+          </div>
+        </div>
+
+        <!-- Livestock Card -->
+        <div class="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 p-6 border border-gray-100">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-gray-500 text-sm font-medium">Livestock</p>
+              <h3 class="text-2xl font-bold text-gray-800 mt-1"><%= @livestock_count %></h3>
+            </div>
+            <div class="p-3 rounded-full bg-yellow-100 text-yellow-600">
+              <i class="fas fa-cow text-xl"></i>
+            </div>
+          </div>
+          <div class="mt-4 flex items-center">
+            <span class="text-green-600 text-sm font-semibold">+<%= @livestock_growth %>%</span>
+            <span class="text-gray-500 text-sm ml-2">from last month</span>
+          </div>
+        </div>
+
+        <!-- Monthly Revenue Card -->
+        <div class="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 p-6 border border-gray-100">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-gray-500 text-sm font-medium">Monthly Revenue</p>
+              <h3 class="text-2xl font-bold text-gray-800 mt-1">$<%= @monthly_revenue %></h3>
+            </div>
+            <div class="p-3 rounded-full bg-purple-100 text-purple-600">
+              <i class="fas fa-dollar-sign text-xl"></i>
+            </div>
+          </div>
+          <div class="mt-4 flex items-center">
+           <span class={
+                 if @revenue_growth >= 0 do
+               "text-green-600 text-sm font-semibold"
+              else
+                "text-red-600 text-sm font-semibold"
+              end
+            }>
+              <%= if @revenue_growth >= 0 do %>+<% end %><%= @revenue_growth %>%
+            </span>
+            <span class="text-gray-500 text-sm ml-2">from last month</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Charts and Maps Section -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+        <!-- Crop Health Chart -->
+        <div class="lg:col-span-2 bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-semibold text-gray-800">Crop Health Monitoring</h3>
+            <div class="flex space-x-2">
+              <button 
+                phx-click="set-chart-range" 
+                phx-value-range="weekly" 
+                class={[
+                  "px-3 py-1 text-xs rounded-full font-medium",
+                  @chart_range == "weekly" && "bg-green-100 text-green-800" || "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                ]}
+              >
+                Weekly
+              </button>
+              <button 
+                phx-click="set-chart-range" 
+                phx-value-range="monthly" 
+                class={[
+                  "px-3 py-1 text-xs rounded-full font-medium",
+                  @chart_range == "monthly" && "bg-green-100 text-green-800" || "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                ]}
+              >
+                Monthly
+              </button>
+              <button 
+                phx-click="set-chart-range" 
+                phx-value-range="yearly" 
+                class={[
+                  "px-3 py-1 text-xs rounded-full font-medium",
+                  @chart_range == "yearly" && "bg-green-100 text-green-800" || "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                ]}
+              >
+                Yearly
+              </button>
+            </div>
+          </div>
+          <div class="h-64">
+            <%= if @crop_health_data do %>
+              <!-- Chart would be rendered here with live data -->
+              <div class="h-full bg-gradient-to-br from-green-50 to-blue-50 rounded-lg flex items-center justify-center">
+                <div class="text-center">
+                  <i class="fas fa-chart-line text-4xl text-green-500 mb-3"></i>
+                  <p class="text-gray-600 font-medium">Crop Health Data Loaded</p>
+                  <p class="text-sm text-gray-500">Showing <%= @chart_range %> data</p>
+                </div>
+              </div>
+            <% else %>
+              <div class="h-full bg-gradient-to-br from-green-50 to-blue-50 rounded-lg flex items-center justify-center">
+                <div class="text-center">
+                  <i class="fas fa-spinner fa-spin text-4xl text-green-500 mb-3"></i>
+                  <p class="text-gray-600 font-medium">Loading Crop Health Data</p>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+
+        <!-- Farm Locations Map -->
+        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+          <h3 class="text-lg font-semibold text-gray-800 mb-4">Farm Locations</h3>
+          <div class="h-64 bg-gradient-to-br from-blue-50 to-green-50 rounded-lg relative">
+            <%= if @farm_locations do %>
+              <!-- Map would be rendered here with live data -->
+              <div class="flex items-center justify-center h-full">
+                <div class="text-center">
+                  <i class="fas fa-map-marked-alt text-4xl text-blue-500 mb-3"></i>
+                  <p class="text-gray-600 font-medium"><%= length(@farm_locations) %> Farms Mapped</p>
+                </div>
+              </div>
+            <% else %>
+              <div class="flex items-center justify-center h-full">
+                <div class="text-center">
+                  <i class="fas fa-spinner fa-spin text-4xl text-blue-500 mb-3"></i>
+                  <p class="text-gray-600 font-medium">Loading Farm Locations</p>
+                </div>
+              </div>
+            <% end %>
+            <!-- Map Legend -->
+            <div class="absolute bottom-4 left-4 bg-white p-2 rounded-lg shadow-sm border">
+              <div class="flex items-center space-x-2">
+                <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                <span class="text-xs font-medium text-gray-700">Active Farms</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Orders and Quick Actions -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Recent Orders Table -->
+        <div class="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-100">
+          <div class="p-6 border-b border-gray-200">
+            <div class="flex items-center justify-between">
+              <h3 class="text-lg font-semibold text-gray-800">Recent Orders</h3>
+              <button 
+                phx-click="view-all-orders" 
+                class="text-sm text-green-600 hover:text-green-700 font-medium"
+              >
+                View All
+              </button>
+            </div>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Order ID</th>
+                  <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Customer</th>
+                  <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Amount</th>
+                  <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</th>
+                  <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Date</th>
+                </tr>
+              </thead>
+              <tbody class="bg-white divide-y divide-gray-200">
+                <%= for order <- @recent_orders do %>
+                  <tr class="hover:bg-gray-50 transition-colors">
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">#<%= order.id %></td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600"><%= order.customer %></td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">$<%= order.amount %></td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <span class={[
+                        "px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full",
+                        order.status == "completed" && "bg-green-100 text-green-800",
+                        order.status == "processing" && "bg-yellow-100 text-yellow-800",
+                        order.status == "shipped" && "bg-blue-100 text-blue-800",
+                        order.status == "cancelled" && "bg-red-100 text-red-800"
+                      ]}>
+                        <%= String.capitalize(order.status) %>
+                      </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><%= order.date %></td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Right Sidebar - Quick Actions and Alerts -->
+        <div class="space-y-6">
+          <!-- Quick Actions -->
+          <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Quick Actions</h3>
+            <div class="grid grid-cols-2 gap-3">
+              <button 
+                phx-click="add-farm" 
+                class="p-4 border border-gray-200 rounded-lg hover:bg-green-50 hover:border-green-200 transition-all duration-200 flex flex-col items-center group"
+              >
+                <div class="w-10 h-10 rounded-full bg-green-100 text-green-600 group-hover:bg-green-200 flex items-center justify-center mb-2 transition-colors">
+                  <i class="fas fa-plus"></i>
+                </div>
+                <span class="text-sm font-medium text-gray-700">Add Farm</span>
+              </button>
+              
+              <button 
+                phx-click="plant-crop" 
+                class="p-4 border border-gray-200 rounded-lg hover:bg-blue-50 hover:border-blue-200 transition-all duration-200 flex flex-col items-center group"
+              >
+                <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-600 group-hover:bg-blue-200 flex items-center justify-center mb-2 transition-colors">
+                  <i class="fas fa-seedling"></i>
+                </div>
+                <span class="text-sm font-medium text-gray-700">Plant Crop</span>
+              </button>
+              
+              <button 
+                phx-click="add-livestock" 
+                class="p-4 border border-gray-200 rounded-lg hover:bg-yellow-50 hover:border-yellow-200 transition-all duration-200 flex flex-col items-center group"
+              >
+                <div class="w-10 h-10 rounded-full bg-yellow-100 text-yellow-600 group-hover:bg-yellow-200 flex items-center justify-center mb-2 transition-colors">
+                  <i class="fas fa-cow"></i>
+                </div>
+                <span class="text-sm font-medium text-gray-700">Add Livestock</span>
+              </button>
+              
+              <button 
+                phx-click="new-product" 
+                class="p-4 border border-gray-200 rounded-lg hover:bg-purple-50 hover:border-purple-200 transition-all duration-200 flex flex-col items-center group"
+              >
+                <div class="w-10 h-10 rounded-full bg-purple-100 text-purple-600 group-hover:bg-purple-200 flex items-center justify-center mb-2 transition-colors">
+                  <i class="fas fa-shopping-basket"></i>
+                </div>
+                <span class="text-sm font-medium text-gray-700">New Product</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- System Alerts -->
+          <div class="bg-white rounded-xl shadow-sm border border-gray-100">
+            <div class="p-6 border-b border-gray-200">
+              <h3 class="text-lg font-semibold text-gray-800">System Alerts</h3>
+            </div>
+            <div class="divide-y divide-gray-200">
+              <%= for alert <- @system_alerts do %>
+                <div class="p-4 flex items-start hover:bg-gray-50 transition-colors">
+                  <div class="flex-shrink-0">
+                    <div class={[
+                      "h-10 w-10 rounded-full flex items-center justify-center",
+                      alert.severity == "critical" && "bg-red-100 text-red-600",
+                      alert.severity == "warning" && "bg-yellow-100 text-yellow-600",
+                      alert.severity == "info" && "bg-blue-100 text-blue-600"
+                    ]}>
+                      <i class={[
+                        alert.severity == "critical" && "fas fa-exclamation-triangle",
+                        alert.severity == "warning" && "fas fa-exclamation-circle",
+                        alert.severity == "info" && "fas fa-info-circle"
+                      ]}></i>
+                    </div>
+                  </div>
+                  <div class="ml-4 flex-1">
+                    <p class="text-sm font-medium text-gray-900"><%= alert.title %></p>
+                    <p class="text-sm text-gray-500 mt-1"><%= alert.message %></p>
+                    <p class="text-xs text-gray-400 mt-2"><%= alert.time %></p>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
