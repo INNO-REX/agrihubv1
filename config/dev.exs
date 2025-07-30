@@ -1,6 +1,5 @@
 import Config
 
-# Configure your database
 config :agrihub, Agrihub.Repo,
   username: "postgres",
   password: "postgres",

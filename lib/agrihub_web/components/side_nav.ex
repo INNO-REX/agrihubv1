@@ -57,6 +57,31 @@ defmodule AgrihubWeb.Components.SideNav do
             current_page={@current_page}
             collapsed={@collapsed}
           />
+          <!-- User Management -->
+          <.nav_group
+            label="User Management"
+            group_id="User_management"
+            collapsed={@collapsed}
+            expanded_groups={@expanded_groups}
+          >
+            <.nav_item
+              icon="fas fa-map-marked-alt"
+              label="User Overview"
+              href={~p"/users"}
+              current_page={@current_page}
+              collapsed={@collapsed}
+              sub_item={true}
+            />
+            <.nav_item
+              icon="fas fa-plus-circle"
+              label="Add User"
+              href={~p"/users/new"}
+              current_page={@current_page}
+              collapsed={@collapsed}
+              sub_item={true}
+            />
+
+          </.nav_group>
 
           <!-- Farm Management -->
           <.nav_group
@@ -91,17 +116,17 @@ defmodule AgrihubWeb.Components.SideNav do
             />
           </.nav_group>
 
-          <!-- Crop Management -->
+          <!-- Drone Management -->
           <.nav_group
-            label="Crop Management"
-            group_id="crop_management"
+            label="Drone Management"
+            group_id="drone_management"
             collapsed={@collapsed}
             expanded_groups={@expanded_groups}
           >
             <.nav_item
               icon="fas fa-seedling"
-              label="Crop Overview"
-              href={~p"/crops"}
+              label="Crop management "
+              href={~p"/drone/management"}
               current_page={@current_page}
               collapsed={@collapsed}
               sub_item={true}
@@ -163,6 +188,31 @@ defmodule AgrihubWeb.Components.SideNav do
               collapsed={@collapsed}
               sub_item={true}
             />
+          </.nav_group>
+          <!-- User Management -->
+          <.nav_group
+            label="User Management"
+            group_id="User_management"
+            collapsed={@collapsed}
+            expanded_groups={@expanded_groups}
+          >
+            <.nav_item
+              icon="fas fa-map-marked-alt"
+              label="User Overview"
+              href={~p"/users"}
+              current_page={@current_page}
+              collapsed={@collapsed}
+              sub_item={true}
+            />
+            <.nav_item
+              icon="fas fa-plus-circle"
+              label="Add User"
+              href={~p"/users/new"}
+              current_page={@current_page}
+              collapsed={@collapsed}
+              sub_item={true}
+            />
+
           </.nav_group>
 
 

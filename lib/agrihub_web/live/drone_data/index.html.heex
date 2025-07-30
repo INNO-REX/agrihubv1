@@ -1,0 +1,91 @@
+<div class="min-h-screen bg-gray-100">
+  <!-- Side Navigation -->
+   
+  <.side_nav current_page="/drone_data" collapsed={@nav_collapsed || false} 
+  expanded_groups={@expanded_groups} socket={@socket}
+  />
+
+  <!-- Main Content Area -->
+  <div class={[
+     "transition-all duration-300",
+     @sidebar_collapsed && "ml-16" || "ml-64"
+    ]}>
+    
+    <!-- Top Navigation Bar -->
+    <header class="bg-white shadow-sm border-b border-gray-200">
+      <div class="px-6 py-4 flex items-center justify-between">
+        <div class="flex items-center space-x-4">
+          <!-- Sidebar Toggle Button -->
+          <button 
+            phx-click="toggle-sidebar" 
+            class="text-gray-500 hover:text-gray-700 focus:outline-none transition-colors duration-200"
+            aria-label={@sidebar_collapsed && "Expand sidebar" || "Collapse sidebar"}
+          >
+            <i class={[
+              "fas transition-transform duration-200",
+              @sidebar_collapsed && "fa-bars" || "fa-times"
+            ]}></i>
+          </button>
+          <h1 class="text-xl font-semibold text-gray-800">AgriHub Drone Management</h1>
+        </div>
+        
+        <!-- Top Right Actions -->
+        <div class="flex items-center space-x-4">
+          <!-- Notifications -->
+          <div class="relative">
+            <button 
+              phx-click="show-notifications" 
+              class="text-gray-500 hover:text-gray-700 focus:outline-none transition-colors duration-200"
+              aria-label="Notifications"
+            >
+              <i class="fas fa-bell text-lg"></i>
+            </button>
+            <span class="absolute -top-1 -right-1 h-3 w-3 rounded-full bg-red-500 flex items-center justify-center">
+              <span class="text-xs text-white font-bold">3</span>
+            </span>
+          </div>
+          
+          <!-- Messages -->
+          <div class="relative">
+            <button 
+              phx-click="show-messages" 
+              class="text-gray-500 hover:text-gray-700 focus:outline-none transition-colors duration-200"
+              aria-label="Messages"
+            >
+              <i class="fas fa-envelope text-lg"></i>
+            </button>
+            <span class="absolute -top-1 -right-1 h-3 w-3 rounded-full bg-blue-500"></span>
+          </div>
+          
+          <!-- Profile Dropdown -->
+          <div class="relative">
+            <button 
+              phx-click="toggle-profile-menu" 
+              class="flex items-center space-x-2 focus:outline-none"
+              aria-label="User menu"
+            >
+              <div class="w-8 h-8 rounded-full bg-green-600 flex items-center justify-center text-white">
+                <i class="fas fa-user text-sm"></i>
+              </div>
+              <span class="text-sm font-medium text-gray-700">Admin</span>
+              <i class="fas fa-chevron-down text-xs text-gray-400"></i>
+            </button>
+            
+            <!-- Profile Dropdown Menu -->
+            <%= if @show_profile_menu do %>
+              <div class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10">
+                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile</a>
+                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
+                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Log out</a>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </header>
+    </div>
+    </div>
+<div class="p-6">   
+    <!-- Main drone Content -->
+    
+</div>

@@ -20,7 +20,7 @@ defmodule AgrihubWeb.DashboardLive.Index do
      |> assign(:plant_growth, 8)
      |> assign(:livestock_count, 356)
      |> assign(:livestock_growth, 5)
-     |> assign(:monthly_revenue, "24,589")
+     |> assign(:monthly_revenue, "24,589, 000")
      |> assign(:revenue_growth, 18)
      |> assign(:chart_range, "weekly")
      |> assign(:crop_health_data, true)

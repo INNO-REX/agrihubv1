@@ -21,6 +21,12 @@ defmodule AgrihubWeb.Router do
     live "/dashboard", DashboardLive.Index, :index
   end
 
+  scope "/drone", AgrihubWeb do
+    pipe_through :browser
+
+    live "/management", DroneDataLive.Index, :index
+  end
+
   scope "/weather", AgrihubWeb do
     pipe_through :browser
 

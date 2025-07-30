@@ -91,8 +91,8 @@ defmodule AgrihubWeb.Components.AdminNavbar do
     """
   end
 
-  defp toggle_dropdown(js \\ %JS{}, menu_id) do
-    js
-    |> JS.toggle(to: menu_id)
-  end
+  defp toggle_dropdown(js \\ %JS{}, menu_id), do: JS.toggle(js, to: menu_id)
+
+
+
 end
