@@ -45,7 +45,7 @@ defmodule AgrihubWeb.HomePageLive.Home do
             Welcome to <span class="font-bold text-green-700">AgriHub</span> — Harnessing technology for sustainable, efficient, and intelligent farming.<br class="hidden md:block" /> Empowering farmers and nature, together.
           </p>
           <div class="flex flex-col sm:flex-row gap-4 w-full justify-center items-center mt-2">
-            <a href="#" class="px-8 py-3 bg-gradient-to-r from-green-600 to-green-400 text-white font-semibold rounded-lg shadow-lg hover:from-green-700 hover:to-green-500 transition-all duration-200 text-lg w-full sm:w-auto">Get Started</a>
+            <a href="/users/log_in" class="px-8 py-3 bg-gradient-to-r from-green-600 to-green-400 text-white font-semibold rounded-lg shadow-lg hover:from-green-700 hover:to-green-500 transition-all duration-200 text-lg w-full sm:w-auto">Get Started</a>
             <a href="#" class="px-8 py-3 border-2 border-green-700 text-green-900 font-semibold rounded-lg bg-white bg-opacity-60 hover:bg-green-50 transition-all duration-200 text-lg w-full sm:w-auto">Learn More</a>
           </div>
           <div class="flex gap-2 mt-8 justify-center">
@@ -65,7 +65,6 @@ defmodule AgrihubWeb.HomePageLive.Home do
         <svg class="absolute left-1/4 top-1/3 w-10 h-10 z-40 animate-float" fill="#bbf7d0" viewBox="0 0 24 24"><circle cx="12" cy="12" r="7" /></svg>
         <!-- Subtle background pattern -->
         <svg class="absolute inset-0 w-full h-full z-0 opacity-10" viewBox="0 0 200 200" fill="none"><defs><pattern id="dots" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="2" fill="#16a34a" /></pattern></defs><rect width="100%" height="100%" fill="url(#dots)" /></svg>
-
 
       </section>
     </div>

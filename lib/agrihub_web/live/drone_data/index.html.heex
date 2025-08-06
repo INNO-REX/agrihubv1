@@ -1,15 +1,17 @@
 <div class="min-h-screen bg-gray-100">
   <!-- Side Navigation -->
-   
-  <.side_nav current_page="/drone_data" collapsed={@nav_collapsed || false} 
-  expanded_groups={@expanded_groups} socket={@socket}
+  <.side_nav 
+    current_page="/drone_data" 
+    collapsed={@nav_collapsed || false} 
+    expanded_groups={@expanded_groups} 
+    socket={@socket}
   />
 
   <!-- Main Content Area -->
   <div class={[
-     "transition-all duration-300",
-     @sidebar_collapsed && "ml-16" || "ml-64"
-    ]}>
+    "transition-all duration-300",
+    @sidebar_collapsed && "ml-16" || "ml-64"
+  ]}>
     
     <!-- Top Navigation Bar -->
     <header class="bg-white shadow-sm border-b border-gray-200">
@@ -83,9 +85,326 @@
         </div>
       </div>
     </header>
+
+    <!-- Main Content -->
+    <div class="p-6">
+      <!-- Mission List Section -->
+      <section class="bg-white rounded-lg shadow-md p-6 mb-8">
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="text-2xl font-semibold text-gray-800">Recent Drone Missions</h2>
+          <div class="flex items-center space-x-4">
+            <!-- Farm Filter -->
+            <div class="relative">
+              <select
+                phx-change="filter_missions"
+                name="farm"
+                class="appearance-none bg-gray-100 border border-gray-300 rounded-lg py-2 px-4 pr-8 focus:outline-none focus:ring-2 focus:ring-green-500"
+              >
+                <option value="all" selected={@selected_farm == "all"}>All Farms</option>
+                <%= for farm <- @farms do %>
+                  <option value={farm} selected={@selected_farm == farm}><%= farm %></option>
+                <% end %>
+              </select>
+              <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                <i class="fas fa-chevron-down"></i>
+              </div>
+            </div>
+            
+            <!-- New Mission Button -->
+            <button 
+              phx-click="open_new_mission"
+              class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition flex items-center space-x-2"
+            >
+              <i class="fas fa-plus"></i>
+              <span>New Mission</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Mission Cards -->
+        <div class="space-y-4">
+          <%= for mission <- @missions do %>
+            <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition">
+              <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                <div>
+                  <h3 class="font-semibold text-lg text-green-800"><%= mission.title %></h3>
+                  <p class="text-gray-600 text-sm mt-1">
+                    Mission Date: <span class="font-medium"><%= mission.date %></span>
+                  </p>
+                  <p class="text-gray-600 mt-2"><%= mission.description %></p>
+                </div>
+                <div class="mt-4 md:mt-0 flex space-x-2">
+                  <button
+                    phx-click="view_images"
+                    phx-value-mission_id={mission.id}
+                    class="bg-blue-100 text-blue-700 px-3 py-1 rounded-lg text-sm hover:bg-blue-200 transition flex items-center"
+                  >
+                    <i class="fas fa-image w-4 h-4 mr-1"></i> View Images
+                  </button>
+                  <button
+                    phx-click="view_map"
+                    phx-value-mission_id={mission.id}
+                    class="bg-purple-100 text-purple-700 px-3 py-1 rounded-lg text-sm hover:bg-purple-200 transition flex items-center"
+                  >
+                    <i class="fas fa-map w-4 h-4 mr-1"></i> View Map
+                  </button>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+
+        <div class="mt-6 flex justify-center">
+          <button class="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200 transition">
+            Load More Missions
+          </button>
+        </div>
+      </section>
+
+      <!-- Image Gallery Section -->
+      <%= if @show_image_gallery do %>
+        <section class="bg-white rounded-lg shadow-md p-6 mb-8">
+          <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-semibold text-gray-800">Mission Images</h2>
+            <button phx-click="close_gallery" class="text-gray-500 hover:text-gray-700">
+              <i class="fas fa-times w-6 h-6"></i>
+            </button>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <%= for {image, index} <- Enum.with_index(@sample_images) do %>
+              <div class="bg-gray-100 rounded-lg overflow-hidden hover:scale-105 transition-transform">
+                <img src={image.url} alt={image.alt} class="w-full h-40 object-cover">
+                <div class="p-3">
+                  <p class="text-sm font-medium text-gray-800"><%= image.title %></p>
+                  <p class="text-xs text-gray-500"><%= image.date %></p>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </section>
+      <% end %>
+
+      <!-- Map Section -->
+      <%= if @show_map do %>
+        <section class="bg-white rounded-lg shadow-md p-6 mb-8">
+          <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-semibold text-gray-800">Mission Flight Path</h2>
+            <button phx-click="close_map" class="text-gray-500 hover:text-gray-700">
+              <i class="fas fa-times w-6 h-6"></i>
+            </button>
+          </div>
+          <div class="bg-gray-200 h-96 w-full flex items-center justify-center rounded-lg">
+            <div class="text-center">
+              <i class="fas fa-map-pin text-6xl text-gray-400 mb-4"></i>
+              <p class="text-gray-600">Interactive map would display here</p>
+              <p class="text-sm text-gray-500">Showing flight path and coverage area</p>
+            </div>
+          </div>
+          <div class="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
+            <!-- Flight Statistics -->
+            <div class="bg-gray-50 p-4 rounded-lg">
+              <h3 class="font-medium text-gray-700 mb-2">Flight Statistics</h3>
+              <ul class="space-y-2 text-sm">
+                <li class="flex justify-between">
+                  <span class="text-gray-600">Distance:</span>
+                  <span class="font-medium">4.7 km</span>
+                </li>
+                <li class="flex justify-between">
+                  <span class="text-gray-600">Duration:</span>
+                  <span class="font-medium">32 min</span>
+                </li>
+                <li class="flex justify-between">
+                  <span class="text-gray-600">Area Covered:</span>
+                  <span class="font-medium">12.5 ha</span>
+                </li>
+              </ul>
+            </div>
+
+            <!-- Image Data Statistics -->
+            <div class="bg-gray-50 p-4 rounded-lg">
+              <h3 class="font-medium text-gray-700 mb-2">Image Data</h3>
+              <ul class="space-y-2 text-sm">
+                <li class="flex justify-between">
+                  <span class="text-gray-600">Images Captured:</span>
+                  <span class="font-medium">147</span>
+                </li>
+                <li class="flex justify-between">
+                  <span class="text-gray-600">Resolution:</span>
+                  <span class="font-medium">20MP</span>
+                </li>
+                <li class="flex justify-between">
+                  <span class="text-gray-600">Sensor Type:</span>
+                  <span class="font-medium">Multispectral</span>
+                </li>
+              </ul>
+            </div>
+
+            <!-- Mission Details -->
+            <div class="bg-gray-50 p-4 rounded-lg">
+              <h3 class="font-medium text-gray-700 mb-2">Mission Details</h3>
+              <ul class="space-y-2 text-sm">
+                <li class="flex justify-between">
+                  <span class="text-gray-600">Date:</span>
+                  <span class="font-medium">2023-06-15</span>
+                </li>
+                <li class="flex justify-between">
+                  <span class="text-gray-600">Time:</span>
+                  <span class="font-medium">09:30 - 10:02</span>
+                </li>
+                <li class="flex justify-between">
+                  <span class="text-gray-600">Weather:</span>
+                  <span class="font-medium">Clear, 22°C</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+      <% end %>
     </div>
-    </div>
-<div class="p-6">   
-    <!-- Main drone Content -->
-    
+  </div>
 </div>
+
+<!-- New Mission Modal -->
+<%= if @show_new_mission_modal do %>
+  <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" phx-click="close_new_mission">
+    <div class="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto" phx-click-away="close_new_mission">
+      <div class="p-6">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-xl font-semibold text-gray-800">Create New Drone Mission</h3>
+          <button phx-click="close_new_mission" class="text-gray-500 hover:text-gray-700">
+            <i class="fas fa-times w-6 h-6"></i>
+          </button>
+        </div>
+
+        <form phx-submit="create_mission">
+          <div class="space-y-4">
+            <div>
+              <label for="mission_title" class="block text-sm font-medium text-gray-700 mb-1">Mission Title</label>
+              <input
+                type="text"
+                name="mission_title"
+                id="mission_title"
+                required
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                placeholder="Enter mission title"
+              />
+            </div>
+
+            <div>
+              <label for="mission_description" class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+              <textarea
+                name="mission_description"
+                id="mission_description"
+                rows="3"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                placeholder="Enter mission description"
+              ></textarea>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label for="farm_select" class="block text-sm font-medium text-gray-700 mb-1">Farm</label>
+                <select
+                  name="farm"
+                  id="farm_select"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                >
+                  <option value="">Select Farm</option>
+                  <%= for farm <- @farms do %>
+                    <option value={farm}><%= farm %></option>
+                  <% end %>
+                </select>
+              </div>
+              <div>
+                <label for="mission_date" class="block text-sm font-medium text-gray-700 mb-1">Mission Date</label>
+                <input
+                  type="date"
+                  name="mission_date"
+                  id="mission_date"
+                  value={Date.utc_today()}
+                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Mission Type</label>
+              <div class="grid grid-cols-2 md:grid-cols-4 gap-2 mt-2">
+                <%= for {type, label} <- @mission_types do %>
+                  <label class="flex items-center space-x-2 p-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50">
+                    <input type="radio" name="mission_type" value={type} class="text-green-600">
+                    <span class="text-sm"><%= label %></span>
+                  </label>
+                <% end %>
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Sensors</label>
+              <div class="grid grid-cols-2 md:grid-cols-3 gap-2 mt-2">
+                <%= for {sensor, label} <- @sensor_types do %>
+                  <label class="flex items-center space-x-2 p-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50">
+                    <input type="checkbox" name="sensors[]" value={sensor} class="text-green-600">
+                    <span class="text-sm"><%= label %></span>
+                  </label>
+                <% end %>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-6 flex justify-end space-x-3">
+            <button
+              type="button"
+              phx-click="close_new_mission"
+              class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition flex items-center space-x-2"
+            >
+              <i class="fas fa-check w-4 h-4"></i>
+              <span>Save Mission</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+<!-- Footer -->
+<footer class="bg-gray-800 text-white py-6 mt-8">
+  <div class="container mx-auto px-4">
+    <div class="flex flex-col md:flex-row justify-between items-center">
+      <div class="mb-4 md:mb-0">
+        <h2 class="text-xl font-bold flex items-center">
+          <i class="fas fa-leaf w-6 h-6 mr-2 text-green-400"></i> AgriHubV1
+        </h2>
+        <p class="text-gray-400 text-sm mt-1">Precision Agriculture Drone Management System</p>
+      </div>
+      <div class="flex space-x-6">
+        <a href="#" class="text-gray-400 hover:text-white transition">
+          <span class="sr-only">Facebook</span>
+          <i class="fab fa-facebook w-5 h-5"></i>
+        </a>
+        <a href="#" class="text-gray-400 hover:text-white transition">
+          <span class="sr-only">Twitter</span>
+          <i class="fab fa-twitter w-5 h-5"></i>
+        </a>
+        <a href="#" class="text-gray-400 hover:text-white transition">
+          <span class="sr-only">Instagram</span>
+          <i class="fab fa-instagram w-5 h-5"></i>
+        </a>
+        <a href="#" class="text-gray-400 hover:text-white transition">
+          <span class="sr-only">LinkedIn</span>
+          <i class="fab fa-linkedin w-5 h-5"></i>
+        </a>
+      </div>
+    </div>
+    <div class="border-t border-gray-700 mt-6 pt-6 text-sm text-gray-400">
+      <p>&copy; 2023 AgriHubV1. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
