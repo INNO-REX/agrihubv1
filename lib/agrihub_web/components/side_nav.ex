@@ -66,156 +66,30 @@ defmodule AgrihubWeb.Components.SideNav do
           >
             <.nav_item
               icon="fas fa-map-marked-alt"
-              label="User Overview"
-              href={~p"/users"}
+              label="Roles"
+              href={~p"/roles"}
               current_page={@current_page}
               collapsed={@collapsed}
               sub_item={true}
             />
             <.nav_item
               icon="fas fa-plus-circle"
-              label="Add User"
+              label="Users"
               href={~p"/users/new"}
               current_page={@current_page}
               collapsed={@collapsed}
               sub_item={true}
             />
-
-          </.nav_group>
-
-          <!-- Farm Management -->
-          <.nav_group
-            label="Farm Management"
-            group_id="farm_management"
-            collapsed={@collapsed}
-            expanded_groups={@expanded_groups}
-          >
-            <.nav_item
-              icon="fas fa-map-marked-alt"
-              label="Farm Overview"
-              href={~p"/farms"}
-              current_page={@current_page}
-              collapsed={@collapsed}
-              sub_item={true}
-            />
-            <.nav_item
+             <.nav_item
               icon="fas fa-plus-circle"
-              label="Add Farm"
-              href={~p"/farms/new"}
-              current_page={@current_page}
-              collapsed={@collapsed}
-              sub_item={true}
-            />
-            <.nav_item
-              icon="fas fa-chart-area"
-              label="Field Mapping"
-              href={~p"/farms/fields"}
-              current_page={@current_page}
-              collapsed={@collapsed}
-              sub_item={true}
-            />
-          </.nav_group>
-
-          <!-- Drone Management -->
-          <.nav_group
-            label="Drone Management"
-            group_id="drone_management"
-            collapsed={@collapsed}
-            expanded_groups={@expanded_groups}
-          >
-            <.nav_item
-              icon="fas fa-seedling"
-              label="Crop management "
-              href={~p"/drone/management"}
-              current_page={@current_page}
-              collapsed={@collapsed}
-              sub_item={true}
-            />
-            <.nav_item
-              icon="fas fa-calendar-alt"
-              label="Planting Schedule"
-              href={~p"/crops/schedule"}
-              current_page={@current_page}
-              collapsed={@collapsed}
-              sub_item={true}
-            />
-            <.nav_item
-              icon="fas fa-heartbeat"
-              label="Health Monitoring"
-              href={~p"/crops/health"}
-              current_page={@current_page}
-              collapsed={@collapsed}
-              sub_item={true}
-            />
-            <.nav_item
-              icon="fas fa-cut"
-              label="Harvest Planning"
-              href={~p"/crops/harvest"}
-              current_page={@current_page}
-              collapsed={@collapsed}
-              sub_item={true}
-            />
-          </.nav_group>
-
-          <!-- Livestock -->
-          <.nav_group
-            label="Livestock"
-            group_id="livestock"
-            collapsed={@collapsed}
-            expanded_groups={@expanded_groups}
-          >
-            <.nav_item
-              icon="fas fa-cow"
-              label="Animal Overview"
-              href={~p"/livestock"}
-              current_page={@current_page}
-              collapsed={@collapsed}
-              sub_item={true}
-            />
-            <.nav_item
-              icon="fas fa-notes-medical"
-              label="Health Records"
-              href={~p"/livestock/health"}
-              current_page={@current_page}
-              collapsed={@collapsed}
-              sub_item={true}
-            />
-            <.nav_item
-              icon="fas fa-baby"
-              label="Breeding"
-              href={~p"/livestock/breeding"}
-              current_page={@current_page}
-              collapsed={@collapsed}
-              sub_item={true}
-            />
-          </.nav_group>
-          <!-- User Management -->
-          <.nav_group
-            label="User Management"
-            group_id="User_management"
-            collapsed={@collapsed}
-            expanded_groups={@expanded_groups}
-          >
-            <.nav_item
-              icon="fas fa-map-marked-alt"
-              label="User Overview"
-              href={~p"/users"}
-              current_page={@current_page}
-              collapsed={@collapsed}
-              sub_item={true}
-            />
-            <.nav_item
-              icon="fas fa-plus-circle"
-              label="Add User"
-              href={~p"/users/new"}
+              label="merchant"
+              href={~p"/merchants/new"}
               current_page={@current_page}
               collapsed={@collapsed}
               sub_item={true}
             />
 
           </.nav_group>
-
-
 
           <!-- Orders & Sales -->
           <.nav_group
@@ -250,50 +124,146 @@ defmodule AgrihubWeb.Components.SideNav do
             />
           </.nav_group>
 
-           <!-- Inventory -->
-          <.nav_item
-            icon="fas fa-boxes"
-            label="Inventory"
-            href={~p"/inventory"}
-            current_page={@current_page}
+          <!-- Farm Management -->
+          <.nav_group
+            label="Farms"
+            group_id="farm_management"
             collapsed={@collapsed}
-          />
+            expanded_groups={@expanded_groups}
+          >
+            <.nav_item
+              icon="fas fa-map-marked-alt"
+              label="Farms"
+              href={~p"/farms"}
+              current_page={@current_page}
+              collapsed={@collapsed}
+              sub_item={true}
+            />
+            <.nav_item
+              icon="fas fa-plus-circle"
+              label="Mapping"
+              href={~p"/farms/new"}
+              current_page={@current_page}
+              collapsed={@collapsed}
+              sub_item={true}
+            />
+            <.nav_item
+              icon="fas fa-chart-area"
+              label="New to me"
+              href={~p"/farms/fields"}
+              current_page={@current_page}
+              collapsed={@collapsed}
+              sub_item={true}
+            />
+            <.nav_item
+              icon="fas fa-chart-area"
+              label="invetory"
+              href={~p"/farms/fields"}
+              current_page={@current_page}
+              collapsed={@collapsed}
+              sub_item={true}
+            />
+             <.nav_item
+              icon="fas fa-chart-area"
+              label="equipment"
+              href={~p"/farms/fields"}
+              current_page={@current_page}
+              collapsed={@collapsed}
+              sub_item={true}
+            />
+             <.nav_item
+              icon="fas fa-chart-area"
+              label="equipment"
+              href={~p"/farms/fields"}
+              current_page={@current_page}
+              collapsed={@collapsed}
+              sub_item={true}
+            />
+             <.nav_item
+              icon="fas fa-chart-area"
+              label="weather"
+              href={~p"/farms/fields"}
+              current_page={@current_page}
+              collapsed={@collapsed}
+              sub_item={true}
+            />
+          </.nav_group>
 
-          <!-- Analytics -->
-          <.nav_item
-            icon="fas fa-chart-line"
-            label="Analytics"
-            href={~p"/analytics"}
-            current_page={@current_page}
-            collapsed={@collapsed}
-          />
 
-          <!-- Equipment -->
-          <.nav_item
-            icon="fas fa-tractor"
-            label="Equipment"
-            href={~p"/equipment"}
-            current_page={@current_page}
+          <!-- Drone Management -->
+          <.nav_group
+            label="Drones"
+            group_id="drone_management"
             collapsed={@collapsed}
-          />
+            expanded_groups={@expanded_groups}
+          >
+            <.nav_item
+              icon="fas fa-seedling"
+              label="Drones "
+              href={~p"/drone/management"}
+              current_page={@current_page}
+              collapsed={@collapsed}
+              sub_item={true}
+            />
+            <.nav_item
+              icon="fas fa-calendar-alt"
+              label="Missions"
+              href={~p"/drone/missions"}
+              current_page={@current_page}
+              collapsed={@collapsed}
+              sub_item={true}
+            />
+            <.nav_item
+              icon="fas fa-heartbeat"
+              label="Metrics"
+              href={~p"/drone/metrics"}
+              current_page={@current_page}
+              collapsed={@collapsed}
+              sub_item={true}
+            />
+            <.nav_item
+              icon="fas fa-cut"
+              label="Other devices"
+              href={~p"/other"}
+              current_page={@current_page}
+              collapsed={@collapsed}
+              sub_item={true}
+            />
+          </.nav_group>
 
-          <!-- Weather -->
-          <.nav_item
-            icon="fas fa-cloud-sun"
-            label="Weather"
-            href={~p"/weather"}
-            current_page={@current_page}
+          <!-- Livestock -->
+          <.nav_group
+            label="Livestock"
+            group_id="livestock"
             collapsed={@collapsed}
-          />
+            expanded_groups={@expanded_groups}
+          >
+            <.nav_item
+              icon="fas fa-cow"
+              label="Livestock"
+              href={~p"/livestock"}
+              current_page={@current_page}
+              collapsed={@collapsed}
+              sub_item={true}
+            />
+            <.nav_item
+              icon="fas fa-notes-medical"
+              label="Health Records"
+              href={~p"/livestock/health"}
+              current_page={@current_page}
+              collapsed={@collapsed}
+              sub_item={true}
+            />
+            <.nav_item
+              icon="fas fa-baby"
+              label="Breeding"
+              href={~p"/livestock/breeding"}
+              current_page={@current_page}
+              collapsed={@collapsed}
+              sub_item={true}
+            />
+          </.nav_group>
 
-          <!-- Settings -->
-          <.nav_item
-            icon="fas fa-cog"
-            label="Settings"
-            href={~p"/settings"}
-            current_page={@current_page}
-            collapsed={@collapsed}
-          />
         </div>
 
         <!-- User Profile Section -->

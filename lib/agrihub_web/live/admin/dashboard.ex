@@ -16,7 +16,7 @@ defmodule AgrihubWeb.DashboardLive.Index do
      |> assign(:show_profile_menu, false)
      |> assign(:total_farms, 24)
      |> assign(:farm_growth, 12)
-     |> assign(:active_plants, 1842)
+     |> assign(:active_plants, "22,120,842")
      |> assign(:plant_growth, 8)
      |> assign(:livestock_count, 356)
      |> assign(:livestock_growth, 5)
@@ -121,43 +121,43 @@ defmodule AgrihubWeb.DashboardLive.Index do
 
   @impl true
   def handle_event("view-all-orders", _, socket) do
-    # Handle navigation to orders page
+    # navigation to orders page
     {:noreply, socket}
   end
 
   @impl true
   def handle_event("add-farm", _, socket) do
-    # Handle add farm action
+    # add farm action
     {:noreply, socket}
   end
 
   @impl true
   def handle_event("plant-crop", _, socket) do
-    # Handle plant crop action
+    # plant crop action
     {:noreply, socket}
   end
 
   @impl true
   def handle_event("add-livestock", _, socket) do
-    # Handle add livestock action
+    # add livestock action
     {:noreply, socket}
   end
 
   @impl true
   def handle_event("new-product", _, socket) do
-    # Handle new product action
+    # new product action
     {:noreply, socket}
   end
 
   @impl true
   def handle_event("show-notifications", _, socket) do
-    # Handle notifications action
+    # notifications action
     {:noreply, socket}
   end
 
   @impl true
   def handle_event("show-messages", _, socket) do
-    # Handle messages action
+    # messages action
     {:noreply, socket}
   end
 
