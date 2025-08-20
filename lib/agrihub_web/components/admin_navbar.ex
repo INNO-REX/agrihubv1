@@ -53,7 +53,7 @@ defmodule AgrihubWeb.Components.AdminNavbar do
                   alt=""
                 />
                 <div class="hidden md:block text-left">
-                  <p class="text-sm font-medium text-gray-700">Admin User</p>
+                  <p class="text-sm font-medium text-gray-700">@Admin</p>
                   <p class="text-xs text-gray-500">admin@admin.com</p>
                 </div>
                 <svg class="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
@@ -76,7 +76,7 @@ defmodule AgrihubWeb.Components.AdminNavbar do
                   Settings
                 </a>
                 <a
-                  href="#"
+                  href="/users/log_out"
                   phx-click="logout"
                   class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50"
                 >

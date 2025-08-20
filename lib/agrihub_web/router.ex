@@ -21,7 +21,6 @@ defmodule AgrihubWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
-    live "/dashboard", DashboardLive.Index, :index
   end
 
   scope "/drone", AgrihubWeb do
@@ -87,6 +86,7 @@ defmodule AgrihubWeb.Router do
 
     live_session :require_authenticated_user,
       on_mount: [{AgrihubWeb.UserAuth, :ensure_authenticated}] do
+      live "/dashboard", DashboardLive.Index, :index
       live "/users/settings", UserSettingsLive, :edit
       live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
     end

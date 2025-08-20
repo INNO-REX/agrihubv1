@@ -17,7 +17,7 @@ defmodule AgrihubWeb.UserSessionController do
   def create(conn, params) do
     create(conn, params, "Welcome back!")
   end
-
+  #here we collect the user params from the user pass and email and pattern matched into a map.
   defp create(conn, %{"user" => user_params}, info) do
     %{"email" => email, "password" => password} = user_params
 

@@ -40,4 +40,8 @@ defmodule AgrihubWeb.UserLoginLive do
     form = to_form(%{"email" => email}, as: "user")
     {:ok, assign(socket, form: form), temporary_assigns: [form: form]}
   end
+
+  def handle_event("validate", _params, socket) do
+    {:noreply, socket}
+  end
 end
